@@ -1,0 +1,31 @@
+{
+  "apiVersion": 2,
+  "name": "a8c/definition-block",
+  "title": "Definition",
+  "category": "text",
+  "icon": "book",
+  "description": "Definition block.",
+  "textdomain": "definition",
+  "attributes": {
+	"term": {
+	  "type": "string",
+	  "source": "html",
+	  "selector": "dfn",
+	  "default": ""
+	},
+	"definition": {
+	  "type": "string",
+	  "source": "html",
+	  "selector": "dd",
+	  "default": ""
+	},
+	"isAbbreviation": {
+	  "type": "boolean",
+	  "default": false
+	},
+	"partOfSpeech": {
+	  "type": "string",
+	  "default": ""
+	}
+  }
+}

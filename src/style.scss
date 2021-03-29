@@ -1,0 +1,49 @@
+/**
+ * Editor styles
+ */
+
+.a8c-definition-block {
+  .a8c-definition-block__term {
+	font-size: 2.5rem;
+	border-bottom: 2px solid #eeeeee;
+	display: block;
+	margin-bottom: 10px;
+  }
+  .a8c-definition-block__definition {
+	padding-left: 0;
+	margin-left: 0;
+  }
+  .a8c-definition-block__term-metadata {
+	padding-left: 10px;
+	font-size: 14px;
+	opacity: 0.8;
+	font-style: italic;
+	font-weight: normal;
+  }
+  .a8c-definition-block__term-text {
+	font-style: normal;
+  }
+  .a8c-definition-block__term-definition {
+	padding-left: 10px;
+  }
+
+  // Minimal style
+  &.is-style-minimal,
+  &.is-minimal {
+	.a8c-definition-block__term {
+	  font-size: 2rem;
+	  border-bottom: 0;
+	  display: block;
+	  margin-bottom: 10px;
+	}
+	.a8c-definition-block__term-metadata {
+	  padding-left: 0;
+	  font-size: .9rem;
+	  font-weight: normal;
+	  display: block;
+	}
+	.a8c-definition-block__term-definition {
+	  padding-left: 0;
+	}
+  }
+}
