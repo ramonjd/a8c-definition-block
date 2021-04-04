@@ -1785,6 +1785,53 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./src/components/search-results.js":
+/*!******************************************!*\
+  !*** ./src/components/search-results.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SearchResults; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/**
+ * External dependencies.
+ */
+
+function SearchResults(_ref) {
+  var _ref$selectedId = _ref.selectedId,
+      selectedId = _ref$selectedId === void 0 ? '' : _ref$selectedId,
+      _ref$searchResults = _ref.searchResults,
+      searchResults = _ref$searchResults === void 0 ? [] : _ref$searchResults,
+      onSelectDefinition = _ref.onSelectDefinition,
+      title = _ref.title;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h4", {
+    className: "a8c-definition-block__search-results-title"
+  }, title), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("ol", {
+    className: "a8c-definition-block__search-results"
+  }, searchResults.length && searchResults.map(function (option) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("li", {
+      className: "a8c-definition-block__search-results-item ".concat(selectedId === option.value ? 'is-selected' : ''),
+      key: option.value
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      className: "a8c-definition-block__search-results-item-button",
+      isTertiary: true,
+      onClick: function onClick() {
+        return onSelectDefinition(option.value);
+      }
+    }, option.label));
+  })));
+}
+
+/***/ }),
+
 /***/ "./src/constants.js":
 /*!**************************!*\
   !*** ./src/constants.js ***!
@@ -1839,12 +1886,21 @@ var PARTS_OF_SPEECH = [{
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DefinitionControls; });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/dom */ "@wordpress/dom");
+/* harmony import */ var _wordpress_dom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_search_results__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/search-results */ "./src/components/search-results.js");
+/* harmony import */ var _use_fetch_definition__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./use-fetch-definition */ "./src/use-fetch-definition.js");
+/* harmony import */ var lodash_isempty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/isempty */ "./node_modules/lodash/isempty.js");
+/* harmony import */ var lodash_isempty__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_isempty__WEBPACK_IMPORTED_MODULE_7__);
+
 
 
 /**
@@ -1853,19 +1909,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * Internal dependencies.
  */
 
+
+
+
+
 function getToggleAbbreviationHelp(checked) {
-  return checked ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Your definition is a whole word or term and not an abbreviation.', 'a8c-definition-block');
-}
-
-function getLocaleFromLocaleData() {
-  var _localeData$;
-
-  var localeData = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["getLocaleData"])();
-  return ((_localeData$ = localeData['']) === null || _localeData$ === void 0 ? void 0 : _localeData$.lang) || 'en';
+  return checked ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Your definition is a whole word or term and not an abbreviation.', 'a8c-definition-block');
 }
 /**
  * Returns editor controls.
@@ -1875,32 +1929,155 @@ function getLocaleFromLocaleData() {
 
 
 function DefinitionControls(_ref) {
-  var isAbbreviation = _ref.isAbbreviation,
+  var term = _ref.term,
+      isAbbreviation = _ref.isAbbreviation,
       onToggleAbbreviation = _ref.onToggleAbbreviation,
       partOfSpeech = _ref.partOfSpeech,
       onChangePartOfSpeech = _ref.onChangePartOfSpeech,
       partsOfSpeechOptions = _ref.partsOfSpeechOptions,
-      searchForDefinition = _ref.searchForDefinition;
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelBody"], {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Definition settings', 'a8c-definition-block')
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelRow"], {
+      onSelectDefinition = _ref.onSelectDefinition;
+
+  var _useFetchDefinition = Object(_use_fetch_definition__WEBPACK_IMPORTED_MODULE_6__["default"])(),
+      isFetching = _useFetchDefinition.isFetching,
+      definitionData = _useFetchDefinition.definitionData,
+      fetchDefinition = _useFetchDefinition.fetchDefinition;
+
+  var _useState = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      shouldShowSearchResults = _useState2[0],
+      setShouldShowSearchResults = _useState2[1];
+
+  var _useState3 = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),
+      definitionOptions = _useState4[0],
+      setDefinitionOptions = _useState4[1];
+
+  var _useState5 = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState6 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState5, 2),
+      searchTerm = _useState6[0],
+      setSearchTerm = _useState6[1];
+
+  var _useState7 = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
+      _useState8 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState7, 2),
+      selectedSearchTermId = _useState8[0],
+      setSelectedSearchTermId = _useState8[1];
+
+  var searchForDefinition = function searchForDefinition() {
+    if (!term || isFetching) {
+      return;
+    } // Don't perform fetch if the current term already matches the fetched term.
+
+
+    if (term === (definitionData === null || definitionData === void 0 ? void 0 : definitionData.definition)) {
+      setShouldShowSearchResults(true);
+      return;
+    }
+
+    setSearchTerm(term);
+    fetchDefinition(term);
+  };
+
+  var setDefinitionData = function setDefinitionData(indexKey) {
+    var _definitionData$defin, _definitionData$defin2;
+
+    console.log('definitionData ', definitionData);
+    console.log('definitionData indexKey', indexKey);
+
+    var _indexKey$split = indexKey.split('-'),
+        _indexKey$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_indexKey$split, 2),
+        definitionIndex = _indexKey$split2[0],
+        meaningIndex = _indexKey$split2[1];
+
+    var definition = definitionData[definitionIndex].meanings[meaningIndex].definitions[0].definition;
+    var partOfSpeech = definitionData[definitionIndex].meanings[meaningIndex].partOfSpeech;
+    var phoneticText = ((_definitionData$defin = definitionData[definitionIndex].phonetics[meaningIndex]) === null || _definitionData$defin === void 0 ? void 0 : _definitionData$defin.text) || ((_definitionData$defin2 = definitionData[definitionIndex].phonetics[0]) === null || _definitionData$defin2 === void 0 ? void 0 : _definitionData$defin2.text); //const newPhoneticAudio = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.audio || definitionData[ definitionIndex ].phonetics[0]?.audio;
+
+    setSelectedSearchTermId(index);
+    onSelectDefinition({
+      definition: definition,
+      partOfSpeech: partOfSpeech
+    });
+  }; // Close the search results if the definition term changes.
+
+
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (term !== searchTerm) {
+      setShouldShowSearchResults(false);
+    }
+  }, [term, searchTerm]); // Set new UI definition data when definitionData from fetch updates.
+
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (!lodash_isempty__WEBPACK_IMPORTED_MODULE_7___default()(definitionData)) {
+      (function () {
+        var newDefinitionOptions = [];
+
+        var _loop = function _loop(definitionsIndex) {
+          if (definitionData.hasOwnProperty(definitionsIndex)) {
+            var _definitionData$defin3;
+
+            (_definitionData$defin3 = definitionData[definitionsIndex].meanings) === null || _definitionData$defin3 === void 0 ? void 0 : _definitionData$defin3.forEach(function (meaning, meaningsIndex) {
+              newDefinitionOptions.push({
+                value: "".concat(definitionsIndex, "-").concat(meaningsIndex),
+                label: "".concat(meaning.definitions[0].definition, " [").concat(meaning.partOfSpeech, "]")
+              });
+            });
+          }
+        };
+
+        for (var definitionsIndex in definitionData) {
+          _loop(definitionsIndex);
+        }
+
+        setDefinitionOptions(newDefinitionOptions);
+
+        if (newDefinitionOptions.length > 1) {
+          setShouldShowSearchResults(true);
+        }
+      })();
+    }
+  }, [definitionData]);
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Panel"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Definition settings', 'a8c-definition-block')
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], {
     className: "a8c-definition-block__panel-row"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Part of speech (optional)', 'a8c-definition-block'),
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Part of speech (optional)', 'a8c-definition-block'),
     value: partOfSpeech,
     options: partsOfSpeechOptions,
     onChange: onChangePartOfSpeech,
     hideCancelButton: false
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, "Not sure? See ", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ExternalLink"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "Not sure? See ", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["ExternalLink"], {
     href: "https://en.wikipedia.org/wiki/Part_of_speech"
-  }, "Parts of Speech"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelRow"], {
+  }, "Parts of Speech"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], {
     className: "a8c-definition-block__panel-row"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ToggleControl"], {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Is the term an abbreviation?', 'a8c-definition-block'),
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["ToggleControl"], {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Is the term an abbreviation?', 'a8c-definition-block'),
     checked: isAbbreviation,
     onChange: onToggleAbbreviation,
     help: getToggleAbbreviationHelp
-  }))));
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Search definition online', 'a8c-definition-block')
+  }, !term && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("p", null, " ", Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enter a definition term in the Editor block to search.', 'a8c-definition-block')), term && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], {
+    className: "a8c-definition-block__panel-row a8c-definition-block__search-control-container"
+  }, term && !shouldShowSearchResults && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    className: "a8c-definition-block__search-button",
+    isLink: true,
+    icon: "search",
+    isBusy: isFetching,
+    disabled: isFetching,
+    onClick: function onClick() {
+      return searchForDefinition();
+    }
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["sprintf"])(
+  /* translators: placeholder is a work or term the user wishes to search. */
+  Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Search definition for "%s"', 'a8c-definition-block'), Object(_wordpress_dom__WEBPACK_IMPORTED_MODULE_4__["__unstableStripHTML"])(term))), shouldShowSearchResults && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(_components_search_results__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["sprintf"])(
+    /* translators: placeholder is a work or term the user wishes to search. */
+    Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Search results for "%s"', 'a8c-definition-block'), Object(_wordpress_dom__WEBPACK_IMPORTED_MODULE_4__["__unstableStripHTML"])(term)),
+    searchResults: definitionOptions,
+    onSelectDefinition: setDefinitionData,
+    selectedId: selectedSearchTermId
+  })))));
 }
 
 /***/ }),
@@ -1921,17 +2098,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var lodash_isempty__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/isempty */ "./node_modules/lodash/isempty.js");
-/* harmony import */ var lodash_isempty__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_isempty__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/dom */ "@wordpress/dom");
-/* harmony import */ var _wordpress_dom__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./controls */ "./src/controls.js");
-/* harmony import */ var _use_fetch_definition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./use-fetch-definition */ "./src/use-fetch-definition.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./constants */ "./src/constants.js");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_editor_scss__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controls */ "./src/controls.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./constants */ "./src/constants.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_editor_scss__WEBPACK_IMPORTED_MODULE_5__);
 
 
 /**
@@ -1940,13 +2110,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
 /**
  * Internal dependencies.
  */
-
 
 
 
@@ -1968,11 +2134,6 @@ function DefinitionEdit(_ref) {
     className: 'a8c-definition-block'
   });
 
-  var _useFetchDefinition = Object(_use_fetch_definition__WEBPACK_IMPORTED_MODULE_7__["default"])(),
-      isFetching = _useFetchDefinition.isFetching,
-      definitionData = _useFetchDefinition.definitionData,
-      fetchDefinition = _useFetchDefinition.fetchDefinition;
-
   var onToggleAbbreviation = function onToggleAbbreviation() {
     return setAttributes({
       isAbbreviation: !isAbbreviation
@@ -1985,29 +2146,13 @@ function DefinitionEdit(_ref) {
     });
   };
 
-  var setDefinitionData = function setDefinitionData() {
-    var definition = definitionData[0].meanings[0].definitions[0].definition;
-    var partOfSpeech = definitionData[0].meanings[0].partOfSpeech;
-    var phoneticText = definitionData[0].phonetics[0].text; //const newPhoneticAudio = definitionData[0].phonetics[0].audio;
-
+  var setDefinitionData = function setDefinitionData(_ref2) {
+    var definition = _ref2.definition,
+        partOfSpeech = _ref2.partOfSpeech;
     setAttributes({
       definition: definition,
       partOfSpeech: partOfSpeech
     });
-  };
-
-  var searchForDefinition = function searchForDefinition() {
-    if (!term || isFetching) {
-      return;
-    } // Don't perform fetch if the current term already matches the fetched term.
-
-
-    if (term === (definitionData === null || definitionData === void 0 ? void 0 : definitionData.definition)) {
-      setDefinitionData();
-      return;
-    }
-
-    fetchDefinition(term);
   };
 
   var definitionTagName = isAbbreviation ? 'abbr' : 'dfn';
@@ -2020,23 +2165,17 @@ function DefinitionEdit(_ref) {
         definition: '',
         isAbbreviation: false
       });
-    }
-  }, [term]); // Set new UI definition data when definitionData from fetch updates.
+    } // TODO: if the current term does not equal the search term query, then close the list of meanings
 
-  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    if (!lodash_isempty__WEBPACK_IMPORTED_MODULE_4___default()(definitionData)) {
-      setDefinitionData();
-    }
-  }, [definitionData]);
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_controls__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, [term]);
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_controls__WEBPACK_IMPORTED_MODULE_3__["default"], {
     term: term,
-    isFetching: isFetching,
     onToggleAbbreviation: onToggleAbbreviation,
     isAbbreviation: isAbbreviation,
     partOfSpeech: partOfSpeech,
     onChangePartOfSpeech: onChangePartOfSpeech,
-    partsOfSpeechOptions: _constants__WEBPACK_IMPORTED_MODULE_8__["PARTS_OF_SPEECH"],
-    searchForDefinition: searchForDefinition
+    partsOfSpeechOptions: _constants__WEBPACK_IMPORTED_MODULE_4__["PARTS_OF_SPEECH"],
+    onSelectDefinition: setDefinitionData
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("dl", blockProps, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("dt", {
     className: "a8c-definition-block__term"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["RichText"], {
@@ -2057,18 +2196,7 @@ function DefinitionEdit(_ref) {
     className: "a8c-definition-block__definition a8c-definition-block__term-metadata"
   }, partOfSpeech && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", {
     className: "a8c-definition-block__part-of-speech"
-  }, "[", partOfSpeech, "]"))), term && !definition && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Button"], {
-    className: "a8c-definition-block__search-button",
-    isTertiary: true,
-    icon: "search",
-    isBusy: isFetching,
-    disabled: isFetching,
-    onClick: function onClick() {
-      return searchForDefinition();
-    }
-  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(
-  /* translators: placeholder is a work or term the user wishes to search. */
-  Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Search for a definition for "%s" online', 'a8c-definition-block'), Object(_wordpress_dom__WEBPACK_IMPORTED_MODULE_5__["__unstableStripHTML"])(term))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["RichText"], {
+  }, "[", partOfSpeech, "]"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["RichText"], {
     className: "a8c-definition-block__definition a8c-definition-block__term-definition",
     role: "definition",
     "aria-labelledby": "a8c-definition-term",

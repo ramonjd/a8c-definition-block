@@ -1,7 +1,7 @@
 /**
  * External dependencies.
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	RichText,
@@ -10,17 +10,11 @@ import {
 import {
 	useEffect,
 } from '@wordpress/element';
-import {
-	Button,
-} from '@wordpress/components';
-import isEmpty from 'lodash/isempty';
-import { __unstableStripHTML as stripHTML } from '@wordpress/dom';
 
 /**
  * Internal dependencies.
  */
 import DefinitionControls from './controls';
-import useFetchDefinition from './use-fetch-definition';
 import { PARTS_OF_SPEECH } from './constants';
 import './editor.scss';
 
@@ -37,27 +31,10 @@ export default function DefinitionEdit( {
 	const blockProps = useBlockProps( {
 		className: 'a8c-definition-block',
 	} );
-	const { isFetching, definitionData, fetchDefinition } = useFetchDefinition();
 	const onToggleAbbreviation = () => setAttributes( { isAbbreviation: ! isAbbreviation } );
 	const onChangePartOfSpeech = ( partOfSpeech ) => setAttributes( { partOfSpeech } );
-	const setDefinitionData = () => {
-		const definition = definitionData[0].meanings[0].definitions[0].definition;
-		const partOfSpeech = definitionData[0].meanings[0].partOfSpeech;
-		const phoneticText = definitionData[0].phonetics[0].text;
-		//const newPhoneticAudio = definitionData[0].phonetics[0].audio;
+	const setDefinitionData = ( { definition, partOfSpeech } ) => {
 		setAttributes( { definition, partOfSpeech } );
-	};
-	const searchForDefinition = () => {
-		if ( ! term || isFetching ) {
-			return;
-		}
-		// Don't perform fetch if the current term already matches the fetched term.
-		if ( term === definitionData?.definition ) {
-			setDefinitionData();
-			return;
-		}
-
-		fetchDefinition( term );
 	};
 	const definitionTagName = isAbbreviation ? 'abbr' : 'dfn';
 	const shouldShowTermMetaData = term && partOfSpeech;
@@ -67,27 +44,20 @@ export default function DefinitionEdit( {
 		if ( ! term ) {
 			setAttributes( { partOfSpeech: '', definition: '', isAbbreviation: false } );
 		}
+		// TODO: if the current term does not equal the search term query, then close the list of meanings
 	}, [ term ] );
-
-	// Set new UI definition data when definitionData from fetch updates.
-	useEffect( () => {
-		if ( ! isEmpty( definitionData ) ) {
-			setDefinitionData();
-		}
-	}, [ definitionData ] );
 
 	return (
 		<>
 			<InspectorControls>
 				<DefinitionControls
 					term={ term }
-					isFetching={ isFetching }
 					onToggleAbbreviation={ onToggleAbbreviation }
 					isAbbreviation={ isAbbreviation }
 					partOfSpeech={ partOfSpeech }
 					onChangePartOfSpeech={ onChangePartOfSpeech }
 					partsOfSpeechOptions={ PARTS_OF_SPEECH }
-					searchForDefinition={ searchForDefinition }
+					onSelectDefinition={ setDefinitionData }
 				/>
 			</InspectorControls>
 			<dl { ...blockProps }>
@@ -111,24 +81,6 @@ export default function DefinitionEdit( {
 					</span>
 					) }
 				</dt>
-				{
-					term && ! definition && (
-						<Button
-							className="a8c-definition-block__search-button"
-							isTertiary
-							icon="search"
-							isBusy={ isFetching }
-							disabled={ isFetching }
-							onClick={ () => searchForDefinition() }
-						>
-							{ sprintf(
-								/* translators: placeholder is a work or term the user wishes to search. */
-								__( 'Search for a definition for "%s" online', 'a8c-definition-block' ),
-								stripHTML( term )
-							)  }
-						</Button>
-					)
-				}
 				<RichText
 					className="a8c-definition-block__definition a8c-definition-block__term-definition"
 					role="definition"

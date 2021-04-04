@@ -1,33 +1,33 @@
 /**
  * External dependencies.
  */
-import { __, getLocaleData } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
+	Button,
+	Panel,
 	PanelBody,
 	SelectControl,
 	ToggleControl,
 	PanelRow,
 	ExternalLink,
-	Button,
-	TextControl,
 } from '@wordpress/components';
+import { __unstableStripHTML as stripHTML } from '@wordpress/dom';
 import {
+	useEffect,
 	useState,
 } from '@wordpress/element';
 
 /**
  * Internal dependencies.
  */
+import SearchResults from './components/search-results';
+import useFetchDefinition from './use-fetch-definition';
+import isEmpty from 'lodash/isempty';
 
 function getToggleAbbreviationHelp( checked ) {
 	return checked
 		? __( 'Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block' )
 		: __( 'Your definition is a whole word or term and not an abbreviation.', 'a8c-definition-block' );
-}
-
-function getLocaleFromLocaleData() {
-	const localeData = getLocaleData();
-	return localeData['']?.lang || 'en';
 }
 
 /**
@@ -37,16 +37,80 @@ function getLocaleFromLocaleData() {
  */
 export default function DefinitionControls(
 	{
+		term,
 		isAbbreviation,
 		onToggleAbbreviation,
 		partOfSpeech,
 		onChangePartOfSpeech,
 		partsOfSpeechOptions,
-		searchForDefinition,
+		onSelectDefinition,
 	} ) {
+	const { isFetching, definitionData, fetchDefinition } = useFetchDefinition();
+	const [ shouldShowSearchResults, setShouldShowSearchResults ] = useState( false );
+	const [ definitionOptions, setDefinitionOptions ] = useState( [] );
+	const [ searchTerm, setSearchTerm ] = useState( '' );
+	const [ selectedSearchTermId, setSelectedSearchTermId ] = useState( null );
+
+	const searchForDefinition = () => {
+		if ( ! term || isFetching ) {
+			return;
+		}
+		// Don't perform fetch if the current term already matches the fetched term.
+		if ( term === definitionData?.definition ) {
+			setShouldShowSearchResults( true );
+			return;
+		}
+
+		setSearchTerm( term );
+
+		fetchDefinition( term );
+	};
+	const setDefinitionData = ( indexKey ) => {
+		console.log( 'definitionData ', definitionData );
+		console.log( 'definitionData indexKey', indexKey );
+		const [ definitionIndex, meaningIndex ] = indexKey.split( '-' );
+
+		const definition = definitionData[ definitionIndex ].meanings[ meaningIndex ].definitions[0].definition;
+		const partOfSpeech = definitionData[ definitionIndex ].meanings[ meaningIndex ].partOfSpeech;
+		const phoneticText = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.text || definitionData[ definitionIndex ].phonetics[0]?.text;
+		//const newPhoneticAudio = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.audio || definitionData[ definitionIndex ].phonetics[0]?.audio;
+		setSelectedSearchTermId( index );
+		onSelectDefinition( { definition, partOfSpeech } )
+	};
+
+	// Close the search results if the definition term changes.
+	useEffect( () => {
+		if ( term !== searchTerm ) {
+			setShouldShowSearchResults( false );
+		}
+	}, [ term, searchTerm ] );
+
+	// Set new UI definition data when definitionData from fetch updates.
+	useEffect( () => {
+		if ( ! isEmpty( definitionData ) ) {
+			const newDefinitionOptions = [];
+
+			for ( const definitionsIndex in definitionData ) {
+				if ( definitionData.hasOwnProperty( definitionsIndex ) ) {
+					definitionData[ definitionsIndex ].meanings?.forEach( ( meaning, meaningsIndex ) => {
+						newDefinitionOptions.push( {
+							value: `${ definitionsIndex }-${ meaningsIndex }`,
+							label: `${ meaning.definitions[0].definition } [${ meaning.partOfSpeech }]`
+						} );
+					} );
+				}
+			}
+
+			setDefinitionOptions( newDefinitionOptions );
+
+			if ( newDefinitionOptions.length > 1 ) {
+				setShouldShowSearchResults( true );
+			}
+		}
+	}, [ definitionData ] );
 
 	return (
-		<>
+		<Panel>
 			<PanelBody title={ __( 'Definition settings', 'a8c-definition-block' ) }>
 				<PanelRow className="a8c-definition-block__panel-row">
 					<SelectControl
@@ -67,32 +131,44 @@ export default function DefinitionControls(
 					/>
 				</PanelRow>
 			</PanelBody>
-{/*			<PanelBody title={ __( 'Online definition', 'a8c-definition-block' ) }>
 
-
-					TODO: support other locales.
-					TODO: default to term in edit.js (properly)
-
+			<PanelBody title={ __( 'Search definition online', 'a8c-definition-block' ) }>
+				{ ! term && <p> { __( 'Enter a definition term in the Editor block to search.', 'a8c-definition-block' ) }</p> }
+				{ term &&
+					<PanelRow className="a8c-definition-block__panel-row a8c-definition-block__search-control-container">
+						{ term && ! shouldShowSearchResults &&
+							<Button
+								className="a8c-definition-block__search-button"
+								isLink
+								icon="search"
+								isBusy={ isFetching }
+								disabled={ isFetching }
+								onClick={ () => searchForDefinition() }
+							>
+								{ sprintf(
+									/* translators: placeholder is a work or term the user wishes to search. */
+									__( 'Search definition for "%s"', 'a8c-definition-block' ),
+									stripHTML( term )
+								)  }
+							</Button>
+						}
+						{ shouldShowSearchResults &&
+							<>
+								<SearchResults
+									title={ sprintf(
+										/* translators: placeholder is a work or term the user wishes to search. */
+										__( 'Search results for "%s"', 'a8c-definition-block' ),
+										stripHTML( term )
+									)  }
+									searchResults={ definitionOptions }
+									onSelectDefinition={ setDefinitionData }
+									selectedId={ selectedSearchTermId }
+								/>
+							</>
+						}
+					</PanelRow>
 				}
-				<form onSubmit={ handleSearch }>
-					<TextControl
-						className="a8c-definition-block__search-input"
-						label={ __( 'Search for a definition online', 'a8c-definition-block' ) }
-						value={ queryTerm }
-						onChange={ ( nextValue ) => setQueryTerm( nextValue ) }
-					/>
-					<Button
-						className="a8c-definition-block__search-button"
-						icon="search"
-						isBusy={ isFetching }
-						disabled={ isFetching }
-						isSecondary
-						type="submit"
-					>
-						{ __( 'Search', 'a8c-definition-block' ) }
-					</Button>
-				</form>
-			</PanelBody>*/}
-		</>
+			</PanelBody>
+		</Panel>
 	);
 }

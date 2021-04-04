@@ -6,9 +6,28 @@
   display: block;
   margin-bottom: 20px;
 }
-.a8c-definition-block__search-input {
-  margin-bottom: 10px;
+.a8c-definition-block__search-results-container {
+  background: white;
+  padding: 10px;
+  position: relative;
 }
-.a8c-definition-block__search-button {
+.a8c-definition-block__search-control-container .a8c-definition-block__search-button {
   padding: 0px 10px;
+  text-decoration: none;
+  height: auto;
+}
+.a8c-definition-block__search-results-title {
+  margin: 0 0 4px 0;
+  color: grey;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.a8c-definition-block__search-results-item .a8c-definition-block__search-results-item-button {
+  border: 0;
+  white-space: normal;
+  text-align: left;
+  height: auto;
+}
+.a8c-definition-block__search-results-item.is-selected {
+
 }
