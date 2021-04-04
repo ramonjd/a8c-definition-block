@@ -25,3 +25,11 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# build files
+build
+
+# IDE
+.idea
+.vscode
+
