@@ -48,6 +48,7 @@ export default function DefinitionControls(
 	const { isFetching, definitionData, fetchDefinition } = useFetchDefinition();
 	const [ shouldShowSearchResults, setShouldShowSearchResults ] = useState( false );
 	const [ definitionOptions, setDefinitionOptions ] = useState( [] );
+	// We cache the last search term so we compare with incoming `term` prop.
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 	const [ selectedSearchTermId, setSelectedSearchTermId ] = useState( null );
 
@@ -62,20 +63,21 @@ export default function DefinitionControls(
 		}
 
 		setSearchTerm( term );
-
 		fetchDefinition( term );
 	};
 	const setDefinitionData = ( indexKey ) => {
-		console.log( 'definitionData ', definitionData );
-		console.log( 'definitionData indexKey', indexKey );
 		const [ definitionIndex, meaningIndex ] = indexKey.split( '-' );
-
 		const definition = definitionData[ definitionIndex ].meanings[ meaningIndex ].definitions[0].definition;
 		const partOfSpeech = definitionData[ definitionIndex ].meanings[ meaningIndex ].partOfSpeech;
-		const phoneticText = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.text || definitionData[ definitionIndex ].phonetics[0]?.text;
+		let isAbbreviation = false;
+		if ( partOfSpeech === 'abbreviation' ) {
+			isAbbreviation = true;
+		}
+		const phoneticTranscription = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.text || definitionData[ definitionIndex ].phonetics[0]?.text;
 		//const newPhoneticAudio = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.audio || definitionData[ definitionIndex ].phonetics[0]?.audio;
-		setSelectedSearchTermId( index );
-		onSelectDefinition( { definition, partOfSpeech } )
+		setSelectedSearchTermId( indexKey );
+
+		onSelectDefinition( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } )
 	};
 
 	// Close the search results if the definition term changes.
@@ -89,7 +91,8 @@ export default function DefinitionControls(
 	useEffect( () => {
 		if ( ! isEmpty( definitionData ) ) {
 			const newDefinitionOptions = [];
-
+			// TODO: abstract this into an adaptor pattern in case we use a different/custom API later.
+			// 	Or we offer a choice of dictionary sources.
 			for ( const definitionsIndex in definitionData ) {
 				if ( definitionData.hasOwnProperty( definitionsIndex ) ) {
 					definitionData[ definitionsIndex ].meanings?.forEach( ( meaning, meaningsIndex ) => {

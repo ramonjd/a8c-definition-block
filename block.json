@@ -26,6 +26,10 @@
 	"partOfSpeech": {
 	  "type": "string",
 	  "default": ""
+	},
+	"phoneticTranscription": {
+	  "type": "string",
+	  "default": ""
 	}
   }
 }
