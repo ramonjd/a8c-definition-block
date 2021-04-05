@@ -25,6 +25,12 @@ import useFetchDefinition from './use-fetch-definition';
 import isEmpty from 'lodash/isempty';
 import DictionaryApi from './lib/class-dictionary-api';
 
+/**
+ * Returns help text for the abbreviation toggle control
+ *
+ * @param {boolean} checked Whether the control is checked or not.
+ * @return {string}         The help message.
+ */
 function getToggleAbbreviationHelp( checked ) {
 	return checked
 		? __( 'Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block' )

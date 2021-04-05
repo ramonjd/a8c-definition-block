@@ -3,6 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Term metadata to render in both the editor and the save methods.
+ *
+ * @param  {object}    Props.
+ * @return {WPElement} Element to render.
+ */
 export default function TermMetaData( { partOfSpeech, phoneticTranscription } ) {
 	const shouldShowTermMetaData = !! partOfSpeech || !! phoneticTranscription;
 

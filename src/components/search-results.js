@@ -5,6 +5,12 @@ import {
 	Button,
 } from '@wordpress/components';
 
+/**
+ * Search results for dictionary search.
+ *
+ * @param  {object}    Props.
+ * @return {WPElement} Element to render.
+ */
 export default function SearchResults( { selectedId = '', searchResults = [], onSelectDefinition, title } ) {
 	return(
 		<>
