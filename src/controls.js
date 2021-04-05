@@ -23,6 +23,7 @@ import {
 import SearchResults from './components/search-results';
 import useFetchDefinition from './use-fetch-definition';
 import isEmpty from 'lodash/isempty';
+import DictionaryApi from './lib/class-dictionary-api';
 
 function getToggleAbbreviationHelp( checked ) {
 	return checked
@@ -45,7 +46,7 @@ export default function DefinitionControls(
 		partsOfSpeechOptions,
 		onSelectDefinition,
 	} ) {
-	const { isFetching, definitionData, fetchDefinition } = useFetchDefinition();
+	const { isFetching, definitionData, fetchDefinition, errorMessage } = useFetchDefinition();
 	const [ shouldShowSearchResults, setShouldShowSearchResults ] = useState( false );
 	const [ definitionOptions, setDefinitionOptions ] = useState( [] );
 	// We cache the last search term so we compare with incoming `term` prop.
@@ -66,47 +67,26 @@ export default function DefinitionControls(
 		fetchDefinition( term );
 	};
 	const setDefinitionData = ( indexKey ) => {
-		const [ definitionIndex, meaningIndex ] = indexKey.split( '-' );
-		const definition = definitionData[ definitionIndex ].meanings[ meaningIndex ].definitions[0].definition;
-		const partOfSpeech = definitionData[ definitionIndex ].meanings[ meaningIndex ].partOfSpeech;
-		let isAbbreviation = false;
-		if ( partOfSpeech === 'abbreviation' ) {
-			isAbbreviation = true;
-		}
-		const phoneticTranscription = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.text || definitionData[ definitionIndex ].phonetics[0]?.text;
-		//const newPhoneticAudio = definitionData[ definitionIndex ].phonetics[ meaningIndex ]?.audio || definitionData[ definitionIndex ].phonetics[0]?.audio;
 		setSelectedSearchTermId( indexKey );
-
-		onSelectDefinition( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } )
+		const { definition, partOfSpeech, phoneticTranscription, isAbbreviation } = DictionaryApi.getSelectedDefinition( definitionData, indexKey.split( '-' ) );
+		onSelectDefinition( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
 	};
 
 	// Close the search results if the definition term changes.
 	useEffect( () => {
-		if ( term !== searchTerm ) {
+		if ( term !== searchTerm || errorMessage ) {
 			setShouldShowSearchResults( false );
 		}
-	}, [ term, searchTerm ] );
+	}, [ term, searchTerm, errorMessage ] );
 
 	// Set new UI definition data when definitionData from fetch updates.
 	useEffect( () => {
 		if ( ! isEmpty( definitionData ) ) {
-			const newDefinitionOptions = [];
-			// TODO: abstract this into an adaptor pattern in case we use a different/custom API later.
-			// 	Or we offer a choice of dictionary sources.
-			for ( const definitionsIndex in definitionData ) {
-				if ( definitionData.hasOwnProperty( definitionsIndex ) ) {
-					definitionData[ definitionsIndex ].meanings?.forEach( ( meaning, meaningsIndex ) => {
-						newDefinitionOptions.push( {
-							value: `${ definitionsIndex }-${ meaningsIndex }`,
-							label: `${ meaning.definitions[0].definition } [${ meaning.partOfSpeech }]`
-						} );
-					} );
-				}
-			}
+			const newDefinitionOptions = DictionaryApi.getOptionsList( definitionData );
 
 			setDefinitionOptions( newDefinitionOptions );
 
-			if ( newDefinitionOptions.length > 1 ) {
+			if ( newDefinitionOptions.length > 0 ) {
 				setShouldShowSearchResults( true );
 			}
 		}
@@ -155,6 +135,7 @@ export default function DefinitionControls(
 								)  }
 							</Button>
 						}
+						{ errorMessage && <p className="a8c-definition-block__error-message">{ errorMessage }</p> }
 						{ shouldShowSearchResults &&
 							<>
 								<SearchResults

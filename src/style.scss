@@ -26,6 +26,16 @@
   .a8c-definition-block__term-definition {
 	padding-left: 10px;
   }
+  .a8c-definition-block__term-metadata-item {
+	display: inline-block;
+	margin-right: 8px;
+  }
+  .a8c-definition-block__term-metadata-item:after {
+	content: ']';
+  }
+  .a8c-definition-block__term-metadata-item:before {
+	content: '[';
+  }
 
   // Minimal style
   &.is-style-minimal,
@@ -44,6 +54,10 @@
 	}
 	.a8c-definition-block__term-definition {
 	  padding-left: 0;
+	}
+	.a8c-definition-block__term-metadata-item:after,
+	.a8c-definition-block__term-metadata-item:before {
+	  content: '';
 	}
   }
 }

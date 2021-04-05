@@ -15,6 +15,7 @@ import {
  * Internal dependencies.
  */
 import DefinitionControls from './controls';
+import TermMetaData from './components/term-metadata';
 import { PARTS_OF_SPEECH } from './constants';
 import './editor.scss';
 
@@ -37,14 +38,12 @@ export default function DefinitionEdit( {
 		setAttributes( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
 	};
 	const definitionTagName = isAbbreviation ? 'abbr' : 'dfn';
-	const shouldShowTermMetaData = term && partOfSpeech;
 
 	// Reset term data if term is deleted.
 	useEffect( () => {
 		if ( ! term ) {
 			setAttributes( { partOfSpeech: '', definition: '', isAbbreviation: false, phoneticTranscription: '' } );
 		}
-		// TODO: if the current term does not equal the search term query, then close the list of meanings
 	}, [ term ] );
 
 	return (
@@ -75,13 +74,7 @@ export default function DefinitionEdit( {
 						value={ term }
 						multiline={ false }
 					/>
-					{/*TODO: add aria labels etc*/}
-					{ shouldShowTermMetaData && (
-						<span className="a8c-definition-block__definition a8c-definition-block__term-metadata">
-						{ partOfSpeech && <span className="a8c-definition-block__term-metadata-item">[{ partOfSpeech }]</span> }
-						{ phoneticTranscription && <span className="a8c-definition-block__term-metadata-item">[{ phoneticTranscription }]</span> }
-					</span>
-					) }
+					<TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } />
 				</dt>
 				<RichText
 					className="a8c-definition-block__definition a8c-definition-block__term-definition"

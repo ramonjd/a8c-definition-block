@@ -2,6 +2,7 @@
  * External dependencies.
  */
 import { RichText, useBlockProps } from '@wordpress/block-editor';
+import TermMetaData from './components/term-metadata';
 
 /**
  * Save method. Renders the frontend markup.
@@ -9,12 +10,11 @@ import { RichText, useBlockProps } from '@wordpress/block-editor';
  * @return {WPElement} Element to render.
  */
 export default function save( { attributes } ) {
-	const { definition, term, isAbbreviation, partOfSpeech } = attributes;
+	const { definition, term, isAbbreviation, partOfSpeech, phoneticTranscription } = attributes;
 	const blockProps = useBlockProps.save( {
 		className: 'a8c-definition-block'
 	} );
 	const definitionTagName = isAbbreviation ? 'abbr' : 'dfn';
-	const shouldShowTermMetaData = !! partOfSpeech;
 
 	return (
 		<dl { ...blockProps }>
@@ -25,11 +25,7 @@ export default function save( { attributes } ) {
 					tagName={ definitionTagName }
 					value={ term }
 				/>
-				{ shouldShowTermMetaData && (
-					<span className="a8c-definition-block__definition a8c-definition-block__term-metadata">
-						{ partOfSpeech && <span className="a8c-definition-block__part-of-speech">[{ partOfSpeech }]</span> }
-					</span>
-				) }
+				<TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } />
 			</dt>
 			<RichText.Content
 				className="a8c-definition-block__definition a8c-definition-block__term-definition"
