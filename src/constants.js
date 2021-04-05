@@ -10,30 +10,34 @@ export const PARTS_OF_SPEECH = [
 	},
 	{
 		label: __( 'Noun, e.g., Apple', 'a8c-definition-block' ),
-		value: 'noun',
+		value: __( 'Noun', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Verb, e.g., Eat', 'a8c-definition-block' ),
-		value: 'verb',
+		value: __( 'Verb', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Article, e.g., The', 'a8c-definition-block' ),
-		value: 'article',
+		value: __( 'Article', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Pronoun, e.g., Their', 'a8c-definition-block' ),
-		value: 'pronoun',
+		value: __( 'Pronoun', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Preposition, e.g., With', 'a8c-definition-block' ),
-		value: 'preposition',
+		value: __( 'Preposition', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Adverb, e.g., Quickly', 'a8c-definition-block' ),
-		value: 'adverb',
+		value: __( 'Adverb', 'a8c-definition-block' ),
 	},
 	{
 		label: __( 'Conjunction, e.g., And', 'a8c-definition-block' ),
-		value: 'conjunction',
+		value: __( 'Conjunction', 'a8c-definition-block' ),
+	},
+	{
+		label: __( 'Abbreviation, e.g., PLC', 'a8c-definition-block' ),
+		value: __( 'Abbreviation', 'a8c-definition-block' ),
 	},
 ];

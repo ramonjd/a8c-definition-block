@@ -36,6 +36,17 @@ function getToggleAbbreviationHelp( checked ) {
 		? __( 'Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block' )
 		: __( 'Your definition is a whole word or term and not an abbreviation.', 'a8c-definition-block' );
 }
+/**
+ * Returns help text for the should show meta toggle control.
+ *
+ * @param {boolean} checked Whether the control is checked or not.
+ * @return {string}         The help message.
+ */
+function getToggleShouldShowTermMetaHelp( checked ) {
+	return checked
+		? __( 'Show parts of speech and other term information.', 'a8c-definition-block' )
+		: __( 'Hide parts of speech and other term information', 'a8c-definition-block' );
+}
 
 /**
  * Returns editor controls.
@@ -51,6 +62,8 @@ export default function DefinitionControls(
 		onChangePartOfSpeech,
 		partsOfSpeechOptions,
 		onSelectDefinition,
+		shouldShowTermMeta,
+		onToggleShouldShowTermMeta,
 	} ) {
 	const { isFetching, definitionData, fetchDefinition, errorMessage } = useFetchDefinition();
 	const [ shouldShowSearchResults, setShouldShowSearchResults ] = useState( false );
@@ -117,6 +130,14 @@ export default function DefinitionControls(
 						checked={ isAbbreviation }
 						onChange={ onToggleAbbreviation }
 						help={ getToggleAbbreviationHelp }
+					/>
+				</PanelRow>
+				<PanelRow className="a8c-definition-block__panel-row">
+					<ToggleControl
+						label={ __( 'Show term meta.', 'a8c-definition-block' ) }
+						checked={ shouldShowTermMeta }
+						onChange={ onToggleShouldShowTermMeta }
+						help={ getToggleShouldShowTermMetaHelp }
 					/>
 				</PanelRow>
 			</PanelBody>

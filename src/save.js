@@ -10,7 +10,14 @@ import TermMetaData from './components/term-metadata';
  * @return {WPElement} Element to render.
  */
 export default function save( { attributes } ) {
-	const { definition, term, isAbbreviation, partOfSpeech, phoneticTranscription } = attributes;
+	const {
+		definition,
+		term,
+		isAbbreviation,
+		partOfSpeech,
+		phoneticTranscription,
+		shouldShowTermMeta
+	} = attributes;
 	const blockProps = useBlockProps.save( {
 		className: 'a8c-definition-block'
 	} );
@@ -25,7 +32,7 @@ export default function save( { attributes } ) {
 					tagName={ definitionTagName }
 					value={ term }
 				/>
-				<TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } />
+				{ shouldShowTermMeta && <TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } /> }
 			</dt>
 			<RichText.Content
 				className="a8c-definition-block__definition a8c-definition-block__term-definition"

@@ -19,9 +19,13 @@
 	  "selector": "dd",
 	  "default": ""
 	},
-	"isAbbreviation": {
+	"shouldShowTermMeta": {
 	  "type": "boolean",
 	  "default": false
+	},
+	"isAbbreviation": {
+	  "type": "boolean",
+	  "default": true
 	},
 	"partOfSpeech": {
 	  "type": "string",

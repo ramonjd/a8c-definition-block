@@ -28,11 +28,19 @@ export default function DefinitionEdit( {
 	attributes,
 	setAttributes,
 } ) {
-	const { definition, term, isAbbreviation, partOfSpeech, phoneticTranscription } = attributes;
+	const {
+		definition,
+		term,
+		isAbbreviation,
+		partOfSpeech,
+		phoneticTranscription,
+		shouldShowTermMeta
+	} = attributes;
 	const blockProps = useBlockProps( {
 		className: 'a8c-definition-block',
 	} );
 	const onToggleAbbreviation = () => setAttributes( { isAbbreviation: ! isAbbreviation } );
+	const onToggleShouldShowTermMeta = () => setAttributes( { shouldShowTermMeta: ! shouldShowTermMeta } );
 	const onChangePartOfSpeech = ( partOfSpeech ) => setAttributes( { partOfSpeech } );
 	const setDefinitionData = ( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } ) => {
 		setAttributes( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
@@ -41,6 +49,7 @@ export default function DefinitionEdit( {
 
 	// Reset term data if term is deleted.
 	useEffect( () => {
+		console.log( 'term', term );
 		if ( ! term ) {
 			setAttributes( { partOfSpeech: '', definition: '', isAbbreviation: false, phoneticTranscription: '' } );
 		}
@@ -57,6 +66,8 @@ export default function DefinitionEdit( {
 					onChangePartOfSpeech={ onChangePartOfSpeech }
 					partsOfSpeechOptions={ PARTS_OF_SPEECH }
 					onSelectDefinition={ setDefinitionData }
+					shouldShowTermMeta={ shouldShowTermMeta }
+					onToggleShouldShowTermMeta={ onToggleShouldShowTermMeta }
 				/>
 			</InspectorControls>
 			<dl { ...blockProps }>
@@ -74,7 +85,7 @@ export default function DefinitionEdit( {
 						value={ term }
 						multiline={ false }
 					/>
-					<TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } />
+					{ shouldShowTermMeta && <TermMetaData partOfSpeech={ partOfSpeech } phoneticTranscription={ phoneticTranscription } /> }
 				</dt>
 				<RichText
 					className="a8c-definition-block__definition a8c-definition-block__term-definition"
