@@ -3,6 +3,7 @@
  */
 
 .a8c-definition-block {
+  padding: 10px 10px;
   .a8c-definition-block__term {
 	font-size: 2.5rem;
 	border-bottom: 2px solid #eeeeee;
@@ -40,6 +41,7 @@
   // Minimal style
   &.is-style-minimal,
   &.is-minimal {
+	padding: 0;
 	.a8c-definition-block__term {
 	  font-size: 2rem;
 	  border-bottom: 0;
