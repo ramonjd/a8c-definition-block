@@ -9,6 +9,7 @@ import { getLocaleData } from '@wordpress/i18n';
  * @return {string} The locale slug.
  */
 export function getLocaleFromLocaleData() {
-	const localeData = getLocaleData();
-	return localeData['']?.lang || 'en';
+	return 'en';
+/*	const localeData = getLocaleData();
+	return localeData && localeData['']?.lang || 'en';*/
 }

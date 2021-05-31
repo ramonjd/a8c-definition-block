@@ -49,7 +49,6 @@ export default function DefinitionEdit( {
 
 	// Reset term data if term is deleted.
 	useEffect( () => {
-		console.log( 'term', term );
 		if ( ! term ) {
 			setAttributes( { partOfSpeech: '', definition: '', isAbbreviation: false, phoneticTranscription: '' } );
 		}

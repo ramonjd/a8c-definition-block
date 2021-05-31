@@ -6,9 +6,9 @@
  * Author:          @ramonopoly
  * License:         GPL-2.0-or-later
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:     definition
+ * Text Domain:     a8c-definition-block
  *
- * @package         create-block
+ * @package         definition-block
  */
 
 /**
