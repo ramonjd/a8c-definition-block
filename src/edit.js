@@ -78,9 +78,7 @@ export default function DefinitionEdit( {
 						tagName={ definitionTagName }
 						aria-label={ __( 'Definition term', 'a8c-definition-block' )  }
 						placeholder={ __( 'Enter definition term', 'a8c-definition-block' )  }
-						onChange={ ( newTerm ) =>
-							setAttributes( { term: newTerm } )
-						}
+						onChange={ ( newTerm ) => setAttributes( { term: newTerm } ) }
 						value={ term }
 						multiline={ false }
 					/>

@@ -76,14 +76,17 @@ export default function DefinitionControls(
 		if ( ! term || isFetching ) {
 			return;
 		}
+
+		const strippedTerm = stripHTML( term );
+
 		// Don't perform fetch if the current term already matches the fetched term.
-		if ( term === definitionData?.definition ) {
+		if ( strippedTerm === definitionData?.definition ) {
 			setShouldShowSearchResults( true );
 			return;
 		}
 
-		setSearchTerm( term );
-		fetchDefinition( term );
+		setSearchTerm( strippedTerm );
+		fetchDefinition( strippedTerm );
 	};
 	const setDefinitionData = ( indexKey ) => {
 		setSelectedSearchTermId( indexKey );
