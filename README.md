@@ -11,9 +11,10 @@ TODO
 
 - [ ] i18n support
 - [ ] Multiple dictionary sources
-- [ ] Support a list of definitions
+- [ ] Support a list of definitions, or an accordion style for glossary pages that have lots of definitions in them
 - [ ] Add definition image/thumbnail option 
-- [ ] Add audio tag for pronunciation examplee
+- [ ] Add audio tag for pronunciation example
+- [ ] A permalink / easy to copy anchor link to the definition from the front-end
 
 ![alt text][screenshot]
 
