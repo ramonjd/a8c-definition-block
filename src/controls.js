@@ -10,6 +10,7 @@ import {
 	ToggleControl,
 	PanelRow,
 	ExternalLink,
+	Popover,
 } from '@wordpress/components';
 import { __unstableStripHTML as stripHTML } from '@wordpress/dom';
 import {
@@ -23,7 +24,8 @@ import {
 import SearchResults from './components/search-results';
 import useFetchDefinition from './use-fetch-definition';
 import isEmpty from 'lodash/isempty';
-import DictionaryApi from './lib/class-dictionary-api';
+import { DictionaryApi } from './lib/dictionary-apis';
+import { getLocaleFromLocaleData } from './utils';
 
 /**
  * Returns help text for the abbreviation toggle control
@@ -36,6 +38,7 @@ function getToggleAbbreviationHelp( checked ) {
 		? __( 'Your definition is an abbreviation, e.g., LOL, and is wrapped in an <abbr /> tag', 'a8c-definition-block' )
 		: __( 'Your definition is a whole word or term and not an abbreviation.', 'a8c-definition-block' );
 }
+
 /**
  * Returns help text for the should show meta toggle control.
  *
@@ -46,6 +49,18 @@ function getToggleShouldShowTermMetaHelp( checked ) {
 	return checked
 		? __( 'Show parts of speech and other term information.', 'a8c-definition-block' )
 		: __( 'Hide parts of speech and other term information', 'a8c-definition-block' );
+}
+
+/**
+ * Stores and returns a dictionary API object.
+ *
+ * @param {string} key A key identifier for a Dictionary API.
+ * @return {Class}     A dictionary class with static member methods.
+ */
+function getDictionaryApiByKey( key = 'dictionaryApi' ) {
+	return {
+		dictionaryApi: DictionaryApi,
+	}[ key ];
 }
 
 /**
@@ -65,13 +80,20 @@ export default function DefinitionControls(
 		shouldShowTermMeta,
 		onToggleShouldShowTermMeta,
 	} ) {
-	const { isFetching, definitionData, fetchDefinition, errorMessage } = useFetchDefinition();
+	const [ shouldShowLanguagePicker, setShouldShowLanguagePicker ] = useState( false );
+	const [ searchLocale, setSearchLocale ] = useState( getLocaleFromLocaleData() );
 	const [ shouldShowSearchResults, setShouldShowSearchResults ] = useState( false );
 	const [ definitionOptions, setDefinitionOptions ] = useState( [] );
 	// We cache the last search term so we compare with incoming `term` prop.
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 	const [ selectedSearchTermId, setSelectedSearchTermId ] = useState( null );
 
+	const dictionaryApi = getDictionaryApiByKey();
+	const { isFetching, definitionData, fetchDefinition, errorMessage } = useFetchDefinition( {
+		locale: searchLocale,
+		api: dictionaryApi,
+
+	} );
 	const searchForDefinition = () => {
 		if ( ! term || isFetching ) {
 			return;
@@ -88,11 +110,15 @@ export default function DefinitionControls(
 		setSearchTerm( strippedTerm );
 		fetchDefinition( strippedTerm );
 	};
+
 	const setDefinitionData = ( indexKey ) => {
 		setSelectedSearchTermId( indexKey );
-		const { definition, partOfSpeech, phoneticTranscription, isAbbreviation } = DictionaryApi.getSelectedDefinition( definitionData, indexKey.split( '-' ) );
+		const { definition, partOfSpeech, phoneticTranscription, isAbbreviation } = dictionaryApi.getSelectedDefinition( definitionData, indexKey.split( '-' ) );
 		onSelectDefinition( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
 	};
+
+	const showLocalePicker = () => setShouldShowLanguagePicker( true );
+	const hideLocalePicker = () => setShouldShowLanguagePicker( false );
 
 	// Close the search results if the definition term changes.
 	useEffect( () => {
@@ -146,7 +172,7 @@ export default function DefinitionControls(
 			</PanelBody>
 
 			<PanelBody title={ __( 'Search definition online', 'a8c-definition-block' ) }>
-				{ ! term && <p> { __( 'Enter a definition term in the Editor block to search.', 'a8c-definition-block' ) }</p> }
+				{ ! term && <PanelRow> { __( 'Enter a definition term in the Editor block to search.', 'a8c-definition-block' ) }</PanelRow> }
 				{ term &&
 					<PanelRow className="a8c-definition-block__panel-row a8c-definition-block__search-control-container">
 						{ term && ! shouldShowSearchResults &&
@@ -156,7 +182,7 @@ export default function DefinitionControls(
 								icon="search"
 								isBusy={ isFetching }
 								disabled={ isFetching }
-								onClick={ () => searchForDefinition() }
+								onClick={ searchForDefinition }
 							>
 								{ sprintf(
 									/* translators: placeholder is a work or term the user wishes to search. */
@@ -165,7 +191,7 @@ export default function DefinitionControls(
 								)  }
 							</Button>
 						}
-						{ errorMessage && <p className="a8c-definition-block__error-message">{ errorMessage }</p> }
+						{ errorMessage && <PanelRow className="a8c-definition-block__error-message">{ errorMessage }</PanelRow> }
 						{ shouldShowSearchResults &&
 							<>
 								<SearchResults
@@ -182,6 +208,34 @@ export default function DefinitionControls(
 						}
 					</PanelRow>
 				}
+				<PanelRow className="a8c-definition-block__current-locale">
+					{ __( 'Current search locale:' ) }
+					<Button
+						className="a8c-definition-block__current-locale-button"
+						isSmall
+						variant="secondary"
+						onClick={ showLocalePicker }
+					>
+						{ searchLocale }
+					</Button>
+					{ shouldShowLanguagePicker && (
+						<div className="a8c-definition-block__locale-picker">
+							{
+								dictionaryApi.getSupportedLocales().map( ( locale ) => (
+									<Button
+										className="a8c-definition-block__locale"
+										isSmall
+										variant="secondary"
+										onClick={ () => hideLocalePicker() }
+										key={ locale }
+									>
+										{ locale }
+									</Button>
+								) )
+							}
+						</div>
+					) }
+				</PanelRow>
 			</PanelBody>
 		</Panel>
 	);

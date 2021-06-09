@@ -1,7 +1,20 @@
 /**
  * A collection of static methods to fetch/interpret the results of the dictionaryapi API endpoint.
+ * See: https://dictionaryapi.dev/
+ * Each dictionary source class should have the same interface.
  */
+
 export default class DictionaryApi {
+	/**
+	 * Returns a list of supported locale slugs. These are the slugs that the API accepts.
+	 * Any transformations between WordPress and 3rd-party slugs should be done in `getFetchUrl`.
+	 *
+	 * @return {Array} A list of supported locale slugs.
+	 */
+	static getSupportedLocales() {
+		return [ 'ar', 'de', 'en', 'en_GB', 'es', 'fr', 'hi', 'it', 'ja', 'ko', 'ru', 'pt-BR', 'tr' ];
+	}
+
 	/**
 	 * Returns an iterable collection of objects so we can display a select list etc.
 	 *
@@ -46,6 +59,41 @@ export default class DictionaryApi {
 	}
 
 	/**
+	 * Takes a WordPress language code and returns the API's corresponding code.
+	 * Not a required on the public interface.
+	 *
+	 * @return {string} The locale code.
+	 */
+	static _getApiSlug( slug ) {
+		const supportedLocales = DictionaryApi.getSupportedLocales();
+
+		// Check if there's a direct match.
+		if ( supportedLocales.indexOf( slug ) > -1 ) {
+			return slug;
+		}
+
+		// Return any custom transforms.
+		const wpToApiSlugDictionary = {
+			pt_BR: 'pt-BR',
+		};
+
+		if ( wpToApiSlugDictionary[ slug ] ) {
+			return wpToApiSlugDictionary[ slug ];
+		}
+
+		// Finally check if there's match on the root of any language variants.
+		if ( slug[2] === '_' ) {
+			slug = slug.split( '_' )[0];
+		}
+
+		if ( supportedLocales.indexOf( slug ) > -1 ) {
+			return slug;
+		}
+
+		return slug;
+	}
+
+	/**
 	 * Returns a concatenated URL to fetch a definition for a given term and language.
 	 *
 	 * @param  {string} term The search term.
@@ -53,6 +101,7 @@ export default class DictionaryApi {
 	 * @return {string}      The URL.
 	 */
 	static getFetchUrl( term, lang = 'en' ) {
-		return `https://api.dictionaryapi.dev/api/v2/entries/${ lang }/${ term }`;
+		const apiLocale = DictionaryApi._getApiSlug( lang );
+		return `https://api.dictionaryapi.dev/api/v2/entries/${ apiLocale }/${ term }`;
 	}
 }

@@ -7,20 +7,25 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import DictionaryApi from './lib/class-dictionary-api';
-import { getLocaleFromLocaleData } from './utils';
+import { DEFAULT_LOCALE } from './constants';
 
 /**
  * A hook to fetch a dictionary definition from an API.
  *
  * @param {string} initialSearchTermValue The initial value of the search term.
+ * @param {string} locale 				  The target language of the definition.
  * @return {object}                       A object of methods and properties to access API request data.
  */
-const useFetchDefinition = ( initialSearchTermValue = '' ) => {
+const useFetchDefinition = ( {
+	initialSearchTermValue = '',
+	locale = DEFAULT_LOCALE,
+	api
+} ) => {
 	const [ isFetching, setIsFetching ] = useState( false );
 	const [ term, setTerm ] = useState( initialSearchTermValue );
 	const [ definitionData, setDefinitionData ] = useState( {} );
 	const [ errorMessage, setErrorMessage ] = useState( '' );
+	const defaultErrorMessage = __( 'Sorry, we couldn\'t find a definition.', 'a8c-definition-block' );
 
 	useEffect( () => {
 		if ( ! term ) {
@@ -31,7 +36,7 @@ const useFetchDefinition = ( initialSearchTermValue = '' ) => {
 
 		// TODO: support other locales. Medium priority.
 		// TODO: support other dictionary sources. Low priority.
-		const fetchUrl = DictionaryApi.getFetchUrl( term, getLocaleFromLocaleData() );
+		const fetchUrl = api.getFetchUrl( term, locale );
 
 		const fetchResults = async () => {
 			setIsFetching( true );
@@ -41,11 +46,11 @@ const useFetchDefinition = ( initialSearchTermValue = '' ) => {
 					if ( response.ok ) {
 						return response;
 					}
-					setErrorMessage( __( 'Sorry, we couldn\'t find a definition.', 'a8c-definition-block' ) );
+					setErrorMessage( defaultErrorMessage );
 					return false;
 				} )
 				.catch( () => {
-					setErrorMessage( __( 'Sorry, we couldn\'t find a definition.', 'a8c-definition-block' ) );
+					setErrorMessage( defaultErrorMessage );
 					return false;
 				} );
 

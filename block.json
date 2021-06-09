@@ -1,39 +1,50 @@
 {
-  "apiVersion": 2,
-  "name": "a8c/definition-block",
-  "title": "Definition",
-  "category": "text",
-  "icon": "book",
-  "description": "Definition block.",
-  "textdomain": "definition",
-  "attributes": {
-	"term": {
-	  "type": "string",
-	  "source": "html",
-	  "selector": "dfn",
-	  "default": ""
+	"apiVersion": 2,
+	"name": "a8c/definition-block",
+	"title": "Definition",
+	"category": "text",
+	"icon": "book",
+	"description": "Definition block.",
+	"textdomain": "definition",
+	"attributes": {
+		"term": {
+			"type": "string",
+			"source": "html",
+			"selector": "dfn",
+			"default": ""
+		},
+		"definition": {
+			"type": "string",
+			"source": "html",
+			"selector": "dd",
+			"default": ""
+		},
+		"shouldShowTermMeta": {
+			"type": "boolean",
+			"default": false
+		},
+		"isAbbreviation": {
+			"type": "boolean",
+			"default": true
+		},
+		"partOfSpeech": {
+			"type": "string",
+			"default": ""
+		},
+		"phoneticTranscription": {
+			"type": "string",
+			"default": ""
+		}
 	},
-	"definition": {
-	  "type": "string",
-	  "source": "html",
-	  "selector": "dd",
-	  "default": ""
-	},
-	"shouldShowTermMeta": {
-	  "type": "boolean",
-	  "default": false
-	},
-	"isAbbreviation": {
-	  "type": "boolean",
-	  "default": true
-	},
-	"partOfSpeech": {
-	  "type": "string",
-	  "default": ""
-	},
-	"phoneticTranscription": {
-	  "type": "string",
-	  "default": ""
+	"supports": {
+		"color": {
+			"gradients": true
+		},
+		"anchor": true,
+		"align": true,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
 	}
-  }
 }

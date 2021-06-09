@@ -3,6 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 
+export const ABBREVIATION = 'abbreviation';
+
+export const DEFAULT_LOCALE = 'en';
+
 export const PARTS_OF_SPEECH = [
 	{
 		label: __( 'Choose a word class (optional)', 'a8c-definition-block' ),
@@ -46,6 +50,6 @@ export const PARTS_OF_SPEECH = [
 	{
 		label: __( 'Abbreviation, e.g., PLC', 'a8c-definition-block' ),
 		title: __( 'Abbreviation', 'a8c-definition-block' ),
-		value: 'abbreviation',
+		value: ABBREVIATION,
 	},
 ];

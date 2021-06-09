@@ -7,16 +7,14 @@ import {
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import {
-	useEffect,
-} from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies.
  */
 import DefinitionControls from './controls';
 import TermMetaData from './components/term-metadata';
-import { PARTS_OF_SPEECH } from './constants';
+import { PARTS_OF_SPEECH, ABBREVIATION } from './constants';
 import './editor.scss';
 
 /**
@@ -39,19 +37,14 @@ export default function DefinitionEdit( {
 	const blockProps = useBlockProps( {
 		className: 'a8c-definition-block',
 	} );
-	const onToggleAbbreviation = () => {
-		const newValue = ! isAbbreviation;
-
-		if ( newValue ) {
-			onChangePartOfSpeech();
-		}
-
-		setAttributes( { isAbbreviation: ! isAbbreviation } );
+	const onToggleAbbreviation = ( newValue ) => {
+		const newPartOfSpeech = newValue && partOfSpeech !== ABBREVIATION ? ABBREVIATION : partOfSpeech;
+		setAttributes( { isAbbreviation: newValue, partOfSpeech: newPartOfSpeech } );
 	};
 	const onToggleShouldShowTermMeta = () => setAttributes( { shouldShowTermMeta: ! shouldShowTermMeta } );
-	const onChangePartOfSpeech = ( partOfSpeech ) => {
-	console.log( 'partOfSpeech', partOfSpeech );
-	setAttributes( { partOfSpeech } )
+	const onChangePartOfSpeech = ( newValue ) => {
+		const newIsAbbreviation = newValue === ABBREVIATION && ! isAbbreviation ? true : false;
+		setAttributes( { partOfSpeech: newValue, isAbbreviation: newIsAbbreviation } )
 	};
 	const setDefinitionData = ( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } ) => {
 		setAttributes( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
