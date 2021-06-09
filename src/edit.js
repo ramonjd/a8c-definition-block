@@ -39,9 +39,20 @@ export default function DefinitionEdit( {
 	const blockProps = useBlockProps( {
 		className: 'a8c-definition-block',
 	} );
-	const onToggleAbbreviation = () => setAttributes( { isAbbreviation: ! isAbbreviation } );
+	const onToggleAbbreviation = () => {
+		const newValue = ! isAbbreviation;
+
+		if ( newValue ) {
+			onChangePartOfSpeech();
+		}
+
+		setAttributes( { isAbbreviation: ! isAbbreviation } );
+	};
 	const onToggleShouldShowTermMeta = () => setAttributes( { shouldShowTermMeta: ! shouldShowTermMeta } );
-	const onChangePartOfSpeech = ( partOfSpeech ) => setAttributes( { partOfSpeech } );
+	const onChangePartOfSpeech = ( partOfSpeech ) => {
+	console.log( 'partOfSpeech', partOfSpeech );
+	setAttributes( { partOfSpeech } )
+	};
 	const setDefinitionData = ( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } ) => {
 		setAttributes( { definition, partOfSpeech, phoneticTranscription, isAbbreviation } );
 	};
